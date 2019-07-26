@@ -1,0 +1,7 @@
+*.o
+*.d
+example/output/
+transcriptPipeline
+test
+test.cpp
+flowgraph.tmp

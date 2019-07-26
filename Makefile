@@ -1,13 +1,14 @@
 ## Change these dirs to correspond to the locations of the libraries
-LEMON_DIR=/cs/work/home/aekuosma/lemon/
-SDSL_DIR=/cs/work/home/aekuosma/software/sdsl-lite
-DIVSUFSORT_DIR=/cs/work/home/aekuosma/software
-GCSA_DIR=/cs/work/home/aekuosma/software/gcsa2
+LEMON_DIR=/home/saska/lemon/lemon-1.3.1
+SDSL_DIR=/home/saska/vg/deps/sdsl-lite
+DIVSUFSORT_DIR=/home/saska
+GCSA_DIR=/home/saska/vg/deps/gcsa2
+BOOST_DIR=/home/saska/boost
 
 CC= g++
 CPPFLAGS = -Wall -std=c++11 -g -O3 -DNDEBUG -fopenmp -pthread
-INCLUDES= -I$(LEMON_DIR)/include -I/$(GCSA_DIR)/include/ -I$(SDSL_DIR)/include/ -I$(DIVSUFSORT_DIR)/include
-LIBRARY= -L$(LEMON_DIR)/lib -L$(GCSA_DIR)/lib -L$(SDSL_DIR)/lib -L$(DIVSUFSORT_DIR)/lib
+INCLUDES= -I$(LEMON_DIR)/ -I$(GCSA_DIR)/include/ -I$(SDSL_DIR)/include/ -I$(DIVSUFSORT_DIR)/include -I$(BOOST_DIR)/
+LIBRARY= -L$(LEMON_DIR)/ -L$(GCSA_DIR)/lib -L$(SDSL_DIR)/lib -L$(DIVSUFSORT_DIR)/lib
 LIBS= -lsdsl -ldivsufsort -ldivsufsort64
 OBJS= SequenceGraph.o Vertex.o ColinearSolver.o RMaxQTree.o SamAlignment.o SamReader.o GenomeReader.o FastaReader.o MaximalExactMatch.o
 MPCOBJS= MC-MPC/decomposer/MPC.o MC-MPC/decomposer/decomposition.o MC-MPC/util/utils.o

@@ -33,8 +33,8 @@
 #include "doubleLinkedList.h"
 
 using namespace std;
-using namespace boost;
-using namespace algorithm;
+//using namespace boost;
+//using namespace algorithm;
 using namespace lemon;
 
 #endif /* MPCHEADERS_H_ */

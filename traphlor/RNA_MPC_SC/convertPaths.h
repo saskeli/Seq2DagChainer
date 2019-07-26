@@ -65,7 +65,7 @@ public:
 
 			std::vector<std::string> parts;
 
-			split(parts, line, is_any_of(MPCUtil::TAB_SEPARATOR));
+			split(parts, line, boost::algorithm::is_any_of(MPCUtil::TAB_SEPARATOR));
 
 			nodes.push_back(make_tuple(parts.at(0), MPCUtil::getIntValue(parts.at(1)), MPCUtil::getIntValue(parts.at(2))));
 
@@ -82,7 +82,7 @@ public:
 				break;
 			std::vector<std::string> parts;
 
-			split(parts, line, is_any_of(MPCUtil::SPACE_SEPARATOR));
+			split(parts, line, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 
 			// Get rid of the empty entry caused by the space at the end of path
 			if(parts.at(parts.size()-1) == "")
@@ -95,19 +95,19 @@ public:
 
 			paths.push_back(nodes);
 
-		}	
+		}
 
 		in_paths.close();
-	    
+
 		if(paths.size() == 0) {
 			return transcripts;
 		}
 
 		// Sort the vector of paths that the transcripts are in order
 		sort(paths.begin(), paths.end());
-	    
+
 		int transcript_count = 1;
-	    
+
 		SamReader* sam_handle = new SamReader();
 
 		sam_handle->Open(samfile);
@@ -176,7 +176,7 @@ public:
 				// split exon, merge this and the previous one
 				if(last_end != -1 && last_end == start - 1) {
 					std::vector<std::string> last_exon;
-					split(last_exon, exons.at(exons.size()-1), is_any_of(MPCUtil::TAB_SEPARATOR));
+					split(last_exon, exons.at(exons.size()-1), boost::algorithm::is_any_of(MPCUtil::TAB_SEPARATOR));
 					exons.pop_back();
 					sstm << last_exon.at(0) << "\t" << last_exon.at(1) << "\t" << last_exon.at(2) << "\t" << last_exon.at(3) << "\t" << end << "\t"
 						<< last_exon.at(5) << "\t" << last_exon.at(6) << "\t" << last_exon.at(7);
@@ -191,7 +191,7 @@ public:
 				last_end = end;
 			}
 
-			sstm << seqname << "\t" << source << "\ttranscript\t" << transcript_start << "\t" << transcript_end << "\t" << score << "\t" << strand << "\t" 
+			sstm << seqname << "\t" << source << "\ttranscript\t" << transcript_start << "\t" << transcript_end << "\t" << score << "\t" << strand << "\t"
 				<< frame << "\tgene_id \"Traph." << gene_id << "\"; transcript_id \"Traph." << gene_id << "." << transcript_count << "\"" << endl;
 
 			transcripts.push_back(sstm.str());

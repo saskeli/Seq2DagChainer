@@ -56,8 +56,8 @@ public:
 		//cout<<"A is: "<<a<<"  B is: "<<b<<endl;
 		vector<string> splittedB;
 		vector<string> splittedA;
-		split(splittedB, b, is_any_of(MPCUtil::SPACE_SEPARATOR));
-		split(splittedA, a, is_any_of(MPCUtil::SPACE_SEPARATOR));
+		split(splittedB, b, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
+		split(splittedA, a, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 		if(splittedA[0]==splittedB[0] || splittedA[splittedA.size()-1]==splittedB[splittedB.size()-1])
 			return merged;
 		if(splittedA[splittedA.size()-1]==splittedB[0]){

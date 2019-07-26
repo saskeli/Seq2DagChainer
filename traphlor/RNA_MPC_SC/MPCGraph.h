@@ -121,21 +121,21 @@ private:
 
 		for(unsigned i=0;i<subPathVector.size();i++) {
 			vector<string> parts;
-			split(parts, subPathVector.at(i), is_any_of(MPCUtil::SPACE_SEPARATOR));
+			split(parts, subPathVector.at(i), boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 			pathStartNodes.push_back(MPCUtil::getIntValue(parts[0]));
 			pathEndNodes.push_back(MPCUtil::getIntValue(parts[parts.size()-1]));
 		}
 
 		for(unsigned i=0;i<subPathVector.size();i++) {
-	
+
 			vector<int> nodeArcs;
 
 			// Check overlaps
 			for(unsigned j=i+1;j<subPathVector.size();j++) {
-				if(MPCUtil::mergePath(subPathVector.at(i),subPathVector.at(j)) !="") 
+				if(MPCUtil::mergePath(subPathVector.at(i),subPathVector.at(j)) !="")
 					nodeArcs.push_back(j);
 
-			}	
+			}
 
 /*			// Do traversal of the graph to check which path start nodes are reachable from this path's end node, these are the transitory arcs
 			vector<int> stack;
@@ -159,7 +159,7 @@ private:
 						stack.push_back(neighborNode.getId());
 					}
 
-					
+
 
 					for(int j=i+1;j<subPathVector.size();j++) {
 						if(pathStartNodes.at(j) == -1)
@@ -229,27 +229,27 @@ private:
 
 		MPCGraph constraintGraph = createMPCGraphFromConstraints(subPathVector, subPathCoverages, arcs, sourceConstraints, sinkConstraints);
 		string constraintSolution = constraintGraph.solve();
-		
+
 
 //		cerr << "Constraint solution:" << endl;
 //		cerr << constraintSolution << endl;
 
 
 		vector<string> paths;
-		split(paths, constraintSolution, is_any_of("\n"));
+		split(paths, constraintSolution, boost::algorithm::is_any_of("\n"));
 
 		// paths.size()-1 because there's an extra line feed at end
 		for(unsigned i=0;i<paths.size()-1;i++) {
 			vector<int> subPath;
 			vector<string> path;
-			split(path, paths.at(i), is_any_of(MPCUtil::SPACE_SEPARATOR));
+			split(path, paths.at(i), boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 
 			// First node is a dummy for forcing min number of paths,
 			vector<string> new_path_vector;
-	                // Dummy at start and extra space at end, so if the size is 3, there's only one node 
+	                // Dummy at start and extra space at end, so if the size is 3, there's only one node
 			if(path.size() == 3) {
 				string temp_path = subPathVector.at(MPCUtil::getIntValue(path.at(1)));
-				split(new_path_vector, temp_path, is_any_of(MPCUtil::SPACE_SEPARATOR));
+				split(new_path_vector, temp_path, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 				for(unsigned j=0;j<new_path_vector.size();j++)
 					subPath.push_back(MPCUtil::getIntValue(new_path_vector.at(j)));
 				this->subpathConstraintVector.push_back(subPath);
@@ -264,14 +264,14 @@ private:
 					new_path = temp_path;
 				// The else below is remnant from trying transitive closure of the graph, could be deleted
 				else {
-					split(new_path_vector, new_path, is_any_of(MPCUtil::SPACE_SEPARATOR));
+					split(new_path_vector, new_path, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 					for(unsigned j=0;j<new_path_vector.size();j++)
 						subPath.push_back(MPCUtil::getIntValue(new_path_vector.at(j)));
 					this->subpathConstraintVector.push_back(subPath);
 					new_path = subPathVector.at(constraint);
 				}
 			}
-			split(new_path_vector, new_path, is_any_of(MPCUtil::SPACE_SEPARATOR));
+			split(new_path_vector, new_path, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 			for(unsigned j=0;j<new_path_vector.size();j++)
 				subPath.push_back(MPCUtil::getIntValue(new_path_vector.at(j)));
 			this->subpathConstraintVector.push_back(subPath);
@@ -304,7 +304,7 @@ private:
 		}
 
                 //cout << "concatenated: " << endl <<  concat_paths << endl;
-		
+
 
 		sdsl::csa_sada<> fm_index;
 		sdsl::construct_im(fm_index, concat_paths.c_str(),1);
@@ -399,7 +399,7 @@ private:
 			overlaptuple tup = overlaps.back();
 			overlaps.pop_back();
 			int first_index = get<0>(tup);
-			int second_index = get<1>(tup);	
+			int second_index = get<1>(tup);
 			int overlap_length = get<2>(tup);
 cerr << first_index << ", " << second_index << ", " << overlap_length << endl;
 
@@ -510,7 +510,7 @@ cerr << first_index << ", " << second_index << ", " << overlap_length << endl;
 			getline(graphFile,line);
 			if(line=="")
 				continue;
-			split(splittedLine, line, is_any_of(MPCUtil::SPACE_SEPARATOR));
+			split(splittedLine, line, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 			for(unsigned j=0;j<splittedLine.size();j++){
 				addArc(arcId, getCopyNodeId(i), MPCUtil::getIntValue(splittedLine[j])); // Create arc
 				arcId++;
@@ -523,7 +523,7 @@ cerr << first_index << ", " << second_index << ", " << overlap_length << endl;
 		MPCLogger::log(MPCUtil::getStringValue(arcId)+" arcs were added.");
 		/*********Set Nodes Coverage*********/
 		readLine(graphFile,line); // read Node coverage line
-		split(splittedLine, line, is_any_of(MPCUtil::SPACE_SEPARATOR));
+		split(splittedLine, line, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 		double coverage;
 		for(unsigned j=0;j<splittedLine.size();j++){
 			coverage=MPCUtil::getDoubleValue(splittedLine[j]);
@@ -540,7 +540,7 @@ cerr << first_index << ", " << second_index << ", " << overlap_length << endl;
 			readLine(graphFile,line); // Read arcs coverage line
 			if(line=="")
 				continue;
-			split(splittedLine, line, is_any_of(MPCUtil::SPACE_SEPARATOR));
+			split(splittedLine, line, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 			for(unsigned j=0;j<splittedLine.size();j++){
 				coverage=MPCUtil::getDoubleValue(splittedLine[j]);
 				getArc(arcId).setCoverage(coverage);
@@ -552,14 +552,14 @@ cerr << first_index << ", " << second_index << ", " << overlap_length << endl;
 
 		/*********Set Solution Start Nodes*********/
 		readLine(graphFile,line);
-		split(splittedLine, line, is_any_of(MPCUtil::SPACE_SEPARATOR));
+		split(splittedLine, line, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 		for(unsigned j=0;j<splittedLine.size();j++){
 			addStartSolNodeId(MPCUtil::getIntValue(splittedLine[j]));
 		}
 
 		/*********Set Solution End Nodes*********/
 		readLine(graphFile,line);
-		split(splittedLine, line, is_any_of(MPCUtil::SPACE_SEPARATOR));
+		split(splittedLine, line, boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 		for(unsigned j=0;j<splittedLine.size();j++){
 			addEndSolNodeId(getCopyNodeId(MPCUtil::getIntValue(splittedLine[j])));
 		}
@@ -671,7 +671,7 @@ cerr << first_index << ", " << second_index << ", " << overlap_length << endl;
 		vector<string> splittedLine;
 		int nodeId=0;
 		while(getline(nodesFile,line)){
-			split(splittedLine, line, is_any_of(MPCUtil::TAB_SEPARATOR));
+			split(splittedLine, line, boost::algorithm::is_any_of(MPCUtil::TAB_SEPARATOR));
 			int size=MPCUtil::getIntValue(splittedLine[2])-MPCUtil::getIntValue(splittedLine[1]);
 			nodeMap.find(nodeId)->second.setSize(size);
 			nodeId++;
@@ -726,7 +726,7 @@ cerr << first_index << ", " << second_index << ", " << overlap_length << endl;
 public:
 	static string readLine(ifstream& graphFile, string& line){
 		getline(graphFile,line);
-		if(ends_with(line, " ")){
+		if(boost::algorithm::ends_with(line, " ")){
 			line=line.substr(0,line.size()-1);
 		}
 		return line;
@@ -849,9 +849,9 @@ public:
 		mpcSink.setLemonId(flowNetwork.id(t_star));
 		flowNodeToMPCNode.insert(pair<int,MPCNode>(flowNetwork.id(t_star),mpcSink));
 
-		ListDigraph::Arc a = flowNetwork.addArc(s_star,t_star); /**/ 
-		lowerMap.set(a,0); 
-		upperMap.set(a,int64_t_MAX); 
+		ListDigraph::Arc a = flowNetwork.addArc(s_star,t_star); /**/
+		lowerMap.set(a,0);
+		upperMap.set(a,int64_t_MAX);
 		costMap.set(a,0);
 		MPCArc mpcSourceSinkArc(-1,mpcSource.getId(),mpcSink.getId());
 		mpcSourceSinkArc.setLemonId(flowNetwork.id(a));
@@ -859,23 +859,23 @@ public:
 		// Adding the nodes
 		for(map<int,MPCNode>::iterator nodeItr=nodeMap.begin();nodeItr!=nodeMap.end();nodeItr++){
 			MPCNode& mpcNode=nodeItr->second;
-			ListDigraph::Node lemonNode = flowNetwork.addNode(); /**/ 
+			ListDigraph::Node lemonNode = flowNetwork.addNode(); /**/
 			supplyMap.set(lemonNode,0);
 			int lemonNodeId=flowNetwork.id(lemonNode);
 			mpcNode.setLemonId(lemonNodeId); // Setting the node lemon Id
 			flowNodeToMPCNode.insert(pair<int,MPCNode>(lemonNodeId,mpcNode));
 			if(isStartNode(mpcNode) ){
 				MPCLogger::log("Start Node: "+MPCUtil::getStringValue(mpcNode.getId()));
-				a = flowNetwork.addArc(s_star,lemonNode); /**/ 
-				lowerMap.set(a,0); 
-				upperMap.set(a,int64_t_MAX); 
+				a = flowNetwork.addArc(s_star,lemonNode); /**/
+				lowerMap.set(a,0);
+				upperMap.set(a,int64_t_MAX);
 				costMap.set(a,0);
 				flowArcToMPCArc.insert(pair<int,MPCArc> (flowNetwork.id(a),MPCArc(-1,mpcSource.getId(),mpcNode.getId())));
 			}
 			if(isEndNode(mpcNode)){
 				MPCLogger::log("End Node: "+MPCUtil::getStringValue(mpcNode.getId()));
-				a = flowNetwork.addArc(lemonNode,t_star); /**/ 
-				lowerMap.set(a,0); 
+				a = flowNetwork.addArc(lemonNode,t_star); /**/
+				lowerMap.set(a,0);
 				upperMap.set(a,int64_t_MAX); costMap.set(a,0);
 				flowArcToMPCArc.insert(pair<int,MPCArc> (flowNetwork.id(a),MPCArc(-2,mpcNode.getId(),mpcSink.getId())));
 			}
@@ -887,9 +887,9 @@ public:
 			MPCArc& mpcArc=arcItr->second;
 			ListDigraph::Node source=flowNetwork.nodeFromId(getNode(mpcArc.getSource()).getLemonId());
 			ListDigraph::Node destination=flowNetwork.nodeFromId(getNode(mpcArc.getTarget()).getLemonId());
-			a=flowNetwork.addArc(source,destination); /**/ 
-			lowerMap.set(a,mpcArc.getLowerBound()); 
-			upperMap.set(a,mpcArc.getUpperBound()); 
+			a=flowNetwork.addArc(source,destination); /**/
+			lowerMap.set(a,mpcArc.getLowerBound());
+			upperMap.set(a,mpcArc.getUpperBound());
 			costMap.set(a,mpcArc.getCost());
 			mpcArc.setLemonId(flowNetwork.id(a));
 			flowArcToMPCArc.insert(pair<int,MPCArc> (flowNetwork.id(a),mpcArc));

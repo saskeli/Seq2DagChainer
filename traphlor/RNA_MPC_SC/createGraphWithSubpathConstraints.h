@@ -142,7 +142,7 @@ private:
 			else {                                                          			return mid;
 			}
 		}
-		return -1;      
+		return -1;
 	}
 
 	// Returns the ranges that contains the given position
@@ -215,8 +215,8 @@ private:
 						 mid--;
 					else
 						 break;
-				}        
-				while(ranges[mid].start == pos) {                                                         
+				}
+				while(ranges[mid].start == pos) {
 					results.push_back(ranges[mid]);
 					mid++;
 					if(mid == ranges.size())
@@ -224,7 +224,7 @@ private:
 
 				}
 				return results;
-			}                                                                                                               
+			}
 		}
 
 		return results;
@@ -236,7 +236,7 @@ private:
 	static double count_coverage(std::vector<AlignmentRange> ranges, long start, long end) {
 		int coverage = 0;
 		for(unsigned i=0; i<ranges.size();i++) {
-			// Whole range is within the area                                   
+			// Whole range is within the area
 			if(ranges[i].start >= start && ranges[i].end <= end)
 				coverage += ranges[i].end-ranges[i].start + 1;
 				// Whole area is within the range
@@ -261,7 +261,7 @@ private:
 		std::vector<SamAlignment> alignments = reader->readAlignmentsRegion(chrom, start, end);
 
 		for(unsigned al=0;al<alignments.size();al++) {
-		
+
 			SamAlignment alignment = alignments.at(al);
 			if(alignment.isSecondary())
 				continue;
@@ -361,7 +361,7 @@ private:
 				if(positions[i] == 0)
 					start = -1;
 				else
-					start = i;            
+					start = i;
 			}
 
 			// Cut if too long
@@ -433,7 +433,7 @@ private:
 				if(last_was_first_fragment && (range.start-prev_start) <= 5)
 					prev_start = range.start;
 
-	
+
 			}
 			// Range ends at end of exon, add this exon if it hasn't been added already
 			else if(!range.last_fragment) {
@@ -460,7 +460,7 @@ private:
 						prev_exon_end = range.end;
 					}
 				}
-	    
+
 				prev_start = range.start;
 				if(range.end > prev_end)
 					prev_end = range.end;
@@ -687,7 +687,7 @@ private:
 		}
 
 		for(int i=0;i<no_of_exons;i++) {
-			if(source[i]) 
+			if(source[i])
 				new_sources.push_back(i);
 			if(sink[i])
 				new_sinks.push_back(i);
@@ -773,7 +773,7 @@ private:
 		for(unsigned i=0;i<subpath_list.size();i++) {
 			long total_length = 0;
 			std::vector<string> subpath;
-			split(subpath, subpath_list.at(i), is_any_of(MPCUtil::SPACE_SEPARATOR));
+			split(subpath, subpath_list.at(i), boost::algorithm::is_any_of(MPCUtil::SPACE_SEPARATOR));
 			for(unsigned j=0;j<subpath.size();j++) {
 				total_length += (exon_list.at(MPCUtil::getIntValue(subpath.at(j))).end-exon_list.at(MPCUtil::getIntValue(subpath.at(j))).start + 1);
 			}
